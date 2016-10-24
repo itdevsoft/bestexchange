@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BestExchange - We will not be beaten by exchange rates</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r;
+		i[r] = i[r] || function() {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, 'script',
+			'https://www.google-analytics.com/analytics.js', 'ga');
+
+	ga('create', 'UA-74727453-4', 'auto');
+	ga('send', 'pageview');
+</script>
+</head>
+<body>
+
+	<div data-role="page" class="paraSection" style="background-image: url(images/bg.png);">
+
+		<div data-role="header">
+			<div class="topPageBox">
+				<div class="ui-grid-b center">
+					<div class="ui-block-a">
+						<a href="tel:0401789472" class="ui-shadow ui-btn ui-icon-phone ui-btn-icon-notext ui-btn-inline">Phone</a>
+					</div>
+					<div class="ui-block-b">
+						<a href="#popupLogin" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-btn ui-icon-user ui-btn-icon-notext ui-btn-inline ui-btn-a" data-transition="pop">User</a>
+					</div>
+					<div class="ui-block-c">
+						<a href="#popupMail" data-rel="popup" data-position-to="window" class="ui-btn ui-shadow ui-btn ui-icon-mail ui-btn-icon-notext ui-btn-inline ui-btn-a" data-transition="pop">Mail</a>
+					</div>
+				</div>
+
+			</div>
+			<!-- / topPageBox -->
+		</div>
+		<!-- /header -->
+
+		<div role="main" class="ui-content">
+			<div class="container">
+				<div>
+					Today's locked-in exchange rate
+					</h4>
+					<h3>
+						1 AUD = <span class="AUD_LKR_Rate"></span> LKR
+				</div>
+				<span class="welcomeSquare"></span>
+				<h4>
+					The fee is only $<span class="AUD_LKR_TrfRate_999"></span> to send
+					up to $1,000. Transfers over $1,000 are $<span
+						class="AUD_LKR_TrfRate_1002">
+				</h4>
+			</div>
+
+			<div data-role="popup" id="popupLogin" data-theme="a"
+				class="ui-corner-all">
+				    <a href="#" data-rel="back"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+
+				<form name='f' action="" method='POST' id="loginform" onsubmit="return toLowerCase(this)">
+					<div style="padding: 0px 20px;">
+						            
+						<h5>Please sign in</h5>
+									<input type="text" name="j_username" id="username" value="" placeholder="username" data-theme="a">
+									<input type="password" name="j_password" id="user_pass" value="" placeholder="password" data-theme="a">
+									<button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check" id="login-form-submit-button">Sign in</button>
+						        	<span style="float:left;font-size: 10px;">Forgot Password</span>
+    									<span style="font-size:10px;float:right;">New Account</span>
+									
+					</div>
+				</form>
+			</div>
+			<div data-role="popup" id="popupMail" data-theme="a"
+				class="ui-corner-all">
+				    <a href="#" data-rel="back"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+
+				<form name='f' action="" method='POST' id="contactform">
+					<div style="padding: 0px 20px;">
+									<h5><div id="SendMessage">Contact Us</div></h5>
+									<input type="text" name="name" id="SendMessageName" value="" placeholder="Name" data-theme="a">
+									<input type="text" name="email" id="SendMessageEmail" value="" placeholder="Email" data-theme="a">
+									<input type="text" name="phone" id="SendMessageNamePhone" value="" placeholder="Phone" data-theme="a">
+									<textarea style="height:80px;" name="message" id="SendMessageMsg" placeholder="Message" data-theme="a"></textarea>
+									<button type="button" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check" id="SendMessageBtn">Send</button>
+						        
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- /content -->
+
+	</div>
+	<!-- /page -->
+
+	<script>
+		jQuery(document).ready(function() {
+			setExchangeRate(14, 127, 1, 'AUD_LKR_Rate');
+			setTransferRate(14, 127, 999, 'AUD_LKR_TrfRate_999');
+			setTransferRate(14, 127, 1002, 'AUD_LKR_TrfRate_1002');
+			jQuery('#SendMessageBtn').click(function(){
+	        	var name = jQuery('#SendMessageName').val(); 
+	        	var email = jQuery('#SendMessageEmail').val(); 
+	        	var phone = jQuery('#SendMessagePhone').val(); 
+	        	var message = jQuery('textarea#SendMessageMsg').val(); 
+	        	if(name && name.length>0 && email && email.length>0 && message && message.length>0)
+	        	{
+	        		sendContactUsEmail(name,email,phone,message);
+	        	}
+	        	else
+	        	{
+	        		jQuery('#SendMessage').html("Please fill all the details.");
+	        		jQuery('#SendMessage').css('color','#F15A2B');
+	        	}
+	        	
+	        });
+		});
+		function sendContactUsEmail(name,email,phone,message)
+	    {
+	    	jQuery('#SendMessage').html("Please wait.. We are sending your message.");
+			jQuery('#SendMessage').css('color','#F15A2B');
+			jQuery('#SendMessage').addClass('blinkText');
+	    	jQuery.ajax({
+		        type: "POST",
+		        url: "http://bestexchange.com.au/generate/sendContactUsRequest",
+		        data:{name : name,email : email,phone : phone,message:message},
+		        dataType: "json",
+		        success: function(msg) {
+		        	console.log("sendContactUsEmail-->"+msg);
+		        	if(msg)
+		        	{
+		        		jQuery('#SendMessage').html("Message Successfuly Sent");
+		        		jQuery('#SendMessage').css('color','#54B948');
+		        	}
+		        	else
+		        	{
+		        		jQuery('#SendMessage').html("Message Sending Error. Please Resend");
+		        		jQuery('#SendMessage').css('color','#54B948');
+		        	}
+		        },
+		        error: function() {
+		            console.log("Failed to load ExchangeRate");
+		            jQuery('#SendMessage').html("Message Sending Error. Please Resend");
+		            jQuery('#SendMessage').css('color','#54B948');
+		        }
+		    });
+	    }
+		function setExchangeRate(sCountry, dCountry, dCountryCurrency, selector) {
+			jQuery.ajax({
+				type : "GET",
+				url : "http://bestexchange.com.au/generate/getExchangeRate?sCountry=" + sCountry + "&dCountry="
+						+ dCountry + "&dCountryCurrency=" + dCountryCurrency,
+				dataType : "json",
+				contentType : "application/json",
+				success : function(msg) {
+					jQuery('.' + selector).html(msg);
+				},
+				error : function() {
+					console.log("Failed to load ExchangeRate");
+				}
+			});
+		}
+		function setTransferRate(sCountry, dCountry, amount, selector) {
+			jQuery.ajax({
+				type : "GET",
+				url : "http://bestexchange.com.au/generate/getTransferRate?sCountry=" + sCountry + "&dCountry="
+						+ dCountry + "&amt=" + amount,
+				dataType : "json",
+				contentType : "application/json",
+				success : function(msg) {
+					jQuery('.' + selector).html(msg);
+				},
+				error : function() {
+					console.log("Failed to load ExchangeRate");
+				}
+			});
+		}
+	</script>
+</body>
+</html>
